@@ -300,6 +300,34 @@ function Admin() {
         </Card>
 
         <Card className="p-6 space-y-3">
+          <div className="flex items-center gap-2">
+            <BookOpen className="h-5 w-5 text-primary" />
+            <h2 className="text-xl font-semibold">Re-import Blog Posts</h2>
+          </div>
+          <p className="text-sm text-muted-foreground">
+            Wipes <code className="bg-muted px-1 rounded">blog_posts</code> and re-imports every published post from{' '}
+            <code className="bg-muted px-1 rounded">checkout.mypeptideco.com</code> via the WordPress REST API.
+          </p>
+          <div className="flex items-center gap-3">
+            <Button onClick={reimportBlogPosts} disabled={blogImporting} variant="destructive">
+              {blogImporting ? (
+                <><Loader2 className="h-4 w-4 mr-2 animate-spin" />Importing…</>
+              ) : (
+                <><RefreshCw className="h-4 w-4 mr-2" />Wipe &amp; re-import all posts</>
+              )}
+            </Button>
+            {blogProgress && <span className="text-sm text-muted-foreground">{blogProgress}</span>}
+          </div>
+          {blogResult && (
+            <div className="text-sm">
+              <Badge variant={blogResult.failed === 0 ? 'default' : 'destructive'}>
+                {blogResult.imported} imported · {blogResult.failed} failed
+              </Badge>
+            </div>
+          )}
+        </Card>
+
+        <Card className="p-6 space-y-3">
           <h2 className="text-xl font-semibold">Webhook URL</h2>
           <p className="text-sm text-muted-foreground">Configure this URL in WooCommerce → Settings → Advanced → Webhooks.</p>
           <code className="block text-xs bg-muted p-3 rounded break-all">
