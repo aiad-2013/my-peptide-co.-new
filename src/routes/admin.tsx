@@ -8,7 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
 import { useAdminGuard } from '@/hooks/useAdminGuard';
 import { useToast } from '@/hooks/use-toast';
-import { CheckCircle2, XCircle, Loader2, RefreshCw, LogOut, Mail } from 'lucide-react';
+import { CheckCircle2, XCircle, Loader2, RefreshCw, LogOut, Mail, BookOpen } from 'lucide-react';
 
 export const Route = createFileRoute('/admin')({
   head: () => ({
@@ -41,6 +41,9 @@ function Admin() {
   const [syncTarget, setSyncTarget] = useState('');
   const [syncResult, setSyncResult] = useState<unknown>(null);
   const [syncing, setSyncing] = useState(false);
+  const [blogImporting, setBlogImporting] = useState(false);
+  const [blogProgress, setBlogProgress] = useState<string>('');
+  const [blogResult, setBlogResult] = useState<{ imported: number; failed: number } | null>(null);
 
   if (guard.status === 'loading') {
     return <div className="min-h-screen grid place-items-center"><Loader2 className="h-6 w-6 animate-spin" /></div>;
@@ -97,6 +100,89 @@ function Admin() {
 
   async function signOut() {
     await supabase.auth.signOut();
+  }
+
+  async function reimportBlogPosts() {
+    setBlogImporting(true);
+    setBlogResult(null);
+    setBlogProgress('Fetching posts from checkout.mypeptideco.com…');
+    const WP_BASE = 'https://checkout.mypeptideco.com/wp-json/wp/v2';
+    type WPPost = {
+      id: number;
+      slug: string;
+      date: string;
+      title: { rendered: string };
+      content: { rendered: string };
+      excerpt: { rendered: string };
+      _embedded?: {
+        'wp:featuredmedia'?: Array<{ source_url?: string }>;
+        'wp:term'?: Array<Array<{ name: string; slug: string; taxonomy: string }>>;
+      };
+    };
+    try {
+      const all: WPPost[] = [];
+      let page = 1;
+      let totalPages = 1;
+      do {
+        const res = await fetch(`${WP_BASE}/posts?per_page=100&page=${page}&_embed=1&status=publish`);
+        if (!res.ok) throw new Error(`WP page ${page} returned ${res.status}`);
+        totalPages = parseInt(res.headers.get('x-wp-totalpages') || '1', 10);
+        const batch = (await res.json()) as WPPost[];
+        all.push(...batch);
+        setBlogProgress(`Fetched ${all.length} posts (page ${page} of ${totalPages})…`);
+        page += 1;
+      } while (page <= totalPages);
+
+      const rows = all.map((p) => {
+        const media = p._embedded?.['wp:featuredmedia']?.[0]?.source_url ?? null;
+        const cats = (p._embedded?.['wp:term'] ?? [])
+          .flat()
+          .filter((t) => t.taxonomy === 'category')
+          .map((t) => ({ name: t.name, slug: t.slug }));
+        return {
+          slug: p.slug,
+          title: p.title.rendered,
+          content: p.content.rendered,
+          excerpt: p.excerpt.rendered,
+          date: p.date,
+          featured_image: media,
+          categories: cats,
+        };
+      });
+
+      setBlogProgress(`Wiping existing blog_posts…`);
+      const { error: delErr } = await supabase
+        .from('blog_posts')
+        .delete()
+        .not('id', 'is', null);
+      if (delErr) throw new Error(`Delete failed: ${delErr.message}`);
+
+      setBlogProgress(`Inserting ${rows.length} posts…`);
+      let imported = 0;
+      let failed = 0;
+      const chunkSize = 50;
+      for (let i = 0; i < rows.length; i += chunkSize) {
+        const chunk = rows.slice(i, i + chunkSize);
+        const { error } = await supabase.from('blog_posts').insert(chunk);
+        if (error) {
+          failed += chunk.length;
+          console.error('Insert chunk failed', error);
+        } else {
+          imported += chunk.length;
+        }
+        setBlogProgress(`Inserted ${imported} / ${rows.length}…`);
+      }
+
+      setBlogResult({ imported, failed });
+      setBlogProgress('');
+      toast({ title: 'Blog import complete', description: `${imported} imported, ${failed} failed.` });
+    } catch (e) {
+      const msg = e instanceof Error ? e.message : 'Unknown error';
+      setBlogProgress('');
+      toast({ title: 'Blog import failed', description: msg, variant: 'destructive' });
+    } finally {
+      setBlogImporting(false);
+    }
   }
 
   return (
