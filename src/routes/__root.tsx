@@ -77,11 +77,19 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "My Peptide Co. - Precision Biotech Solutions" },
+      {
+        name: "description",
+        content:
+          "Pioneering peptide synthesis for advanced research and metabolic optimization. Lab-tested, third-party verified.",
+      },
+      { name: "author", content: "My Peptide Co." },
+      { property: "og:title", content: "My Peptide Co. - Precision Biotech Solutions" },
+      {
+        property: "og:description",
+        content:
+          "Pioneering peptide synthesis for advanced research and metabolic optimization.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:site", content: "@Lovable" },
@@ -90,6 +98,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         rel: "stylesheet",
         href: appCss,
+      },
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@0,300;0,500;0,600;1,500&display=swap",
       },
     ],
   }),
@@ -118,8 +132,94 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <Outlet />
+      <div className="flex min-h-screen flex-col bg-background text-foreground">
+        <SiteNav />
+        <main className="flex-1">
+          <Outlet />
+        </main>
+        <SiteFooter />
+      </div>
     </QueryClientProvider>
+  );
+}
+
+function SiteNav() {
+  return (
+    <nav className="flex items-center justify-between border-b border-brand-navy/5 px-8 py-6">
+      <Link
+        to="/"
+        className="text-sm font-semibold uppercase tracking-tighter text-brand-navy"
+      >
+        My Peptide Co.
+      </Link>
+      <div className="hidden gap-10 text-[11px] uppercase tracking-widest text-brand-navy md:flex">
+        <Link to="/" className="transition-opacity hover:opacity-60">
+          Research
+        </Link>
+        <Link to="/" className="transition-opacity hover:opacity-60">
+          Catalog
+        </Link>
+        <Link to="/" className="transition-opacity hover:opacity-60">
+          Science
+        </Link>
+        <Link
+          to="/about"
+          activeProps={{ className: "opacity-60" }}
+          className="transition-opacity hover:opacity-60"
+        >
+          About
+        </Link>
+      </div>
+      <button className="rounded-full bg-brand-navy px-5 py-2 text-[10px] uppercase tracking-widest text-white transition-opacity hover:opacity-90">
+        Shop Portal
+      </button>
+    </nav>
+  );
+}
+
+function SiteFooter() {
+  return (
+    <footer className="bg-brand-navy px-8 py-20 text-white">
+      <div className="mx-auto max-w-6xl">
+        <div className="mb-20 grid gap-12 md:grid-cols-4">
+          <div className="col-span-2">
+            <div className="mb-6 text-xl font-semibold tracking-tighter">
+              MY PEPTIDE CO.
+            </div>
+            <p className="mb-8 max-w-sm text-sm leading-relaxed text-white/50">
+              Providing the highest purity peptides for researchers and innovators globally. All products are for research use only.
+            </p>
+          </div>
+          <div>
+            <h5 className="mb-6 text-[10px] uppercase tracking-widest text-white/30">
+              Discovery
+            </h5>
+            <ul className="space-y-3 text-sm">
+              <li><a href="#" className="hover:text-brand-mint">New Arrivals</a></li>
+              <li><a href="#" className="hover:text-brand-mint">Bulk Orders</a></li>
+              <li><a href="#" className="hover:text-brand-mint">Lab Testing</a></li>
+            </ul>
+          </div>
+          <div>
+            <h5 className="mb-6 text-[10px] uppercase tracking-widest text-white/30">
+              Company
+            </h5>
+            <ul className="space-y-3 text-sm">
+              <li><Link to="/about" className="hover:text-brand-mint">Our Story</Link></li>
+              <li><a href="#" className="hover:text-brand-mint">Compliance</a></li>
+              <li><a href="#" className="hover:text-brand-mint">Contact</a></li>
+            </ul>
+          </div>
+        </div>
+        <div className="flex flex-col items-center justify-between gap-6 border-t border-white/5 pt-12 text-[10px] uppercase tracking-widest text-white/20 md:flex-row">
+          <div>&copy; 2026 My Peptide Co. All Rights Reserved.</div>
+          <div className="flex gap-8">
+            <a href="#">Terms</a>
+            <a href="#">Privacy</a>
+            <a href="#">Shipping</a>
+          </div>
+        </div>
+      </div>
+    </footer>
   );
 }
