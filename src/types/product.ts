@@ -17,6 +17,8 @@ export interface Product {
   concentration?: string;
   volume?: string;
   description?: string;
+  shortDescription?: string;
+  longDescription?: string;
   dosage?: string;
   image: string;
   images?: string[];
@@ -25,7 +27,13 @@ export interface Product {
   isBundle?: boolean;
   peopleViewing?: number;
   wooCommerceUrl?: string;
+  wooCommerceId?: string | number;
   slug?: string;
+  discountTiers?: Array<{ quantity: number; discount: number; label?: string; price?: number }>;
+  bundledItems?: Array<{ name: string; quantity?: number; price?: number; image?: string }>;
+  savingsText?: string;
+  faqs?: Array<{ question: string; answer: string }>;
+  [key: string]: unknown;
 }
 
 export interface CartItem {

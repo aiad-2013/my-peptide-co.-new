@@ -9,9 +9,120 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as WeightLossRouteImport } from './routes/weight-loss'
+import { Route as TermsOfServiceRouteImport } from './routes/terms-of-service'
+import { Route as ShippingRouteImport } from './routes/shipping'
+import { Route as SarmsRouteImport } from './routes/sarms'
+import { Route as ReturnsRouteImport } from './routes/returns'
+import { Route as ProductsRouteImport } from './routes/products'
+import { Route as ProductDiagramsRouteImport } from './routes/product-diagrams'
+import { Route as PrivacyPolicyRouteImport } from './routes/privacy-policy'
+import { Route as PeptidesRouteImport } from './routes/peptides'
+import { Route as PctRouteImport } from './routes/pct'
+import { Route as NotFoundRouteImport } from './routes/not-found'
+import { Route as LabReportsRouteImport } from './routes/lab-reports'
+import { Route as Glp1RouteImport } from './routes/glp-1'
+import { Route as FaqRouteImport } from './routes/faq'
+import { Route as ErectilePerformanceRouteImport } from './routes/erectile-performance'
+import { Route as DilutesRouteImport } from './routes/dilutes'
+import { Route as BlogRouteImport } from './routes/blog'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ProductSlugRouteImport } from './routes/product.$slug'
+import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
+import { Route as AdminLoginRouteImport } from './routes/admin.login'
 
+const WeightLossRoute = WeightLossRouteImport.update({
+  id: '/weight-loss',
+  path: '/weight-loss',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const TermsOfServiceRoute = TermsOfServiceRouteImport.update({
+  id: '/terms-of-service',
+  path: '/terms-of-service',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ShippingRoute = ShippingRouteImport.update({
+  id: '/shipping',
+  path: '/shipping',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SarmsRoute = SarmsRouteImport.update({
+  id: '/sarms',
+  path: '/sarms',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReturnsRoute = ReturnsRouteImport.update({
+  id: '/returns',
+  path: '/returns',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProductsRoute = ProductsRouteImport.update({
+  id: '/products',
+  path: '/products',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProductDiagramsRoute = ProductDiagramsRouteImport.update({
+  id: '/product-diagrams',
+  path: '/product-diagrams',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PrivacyPolicyRoute = PrivacyPolicyRouteImport.update({
+  id: '/privacy-policy',
+  path: '/privacy-policy',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PeptidesRoute = PeptidesRouteImport.update({
+  id: '/peptides',
+  path: '/peptides',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const PctRoute = PctRouteImport.update({
+  id: '/pct',
+  path: '/pct',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const NotFoundRoute = NotFoundRouteImport.update({
+  id: '/not-found',
+  path: '/not-found',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LabReportsRoute = LabReportsRouteImport.update({
+  id: '/lab-reports',
+  path: '/lab-reports',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const Glp1Route = Glp1RouteImport.update({
+  id: '/glp-1',
+  path: '/glp-1',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FaqRoute = FaqRouteImport.update({
+  id: '/faq',
+  path: '/faq',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ErectilePerformanceRoute = ErectilePerformanceRouteImport.update({
+  id: '/erectile-performance',
+  path: '/erectile-performance',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DilutesRoute = DilutesRouteImport.update({
+  id: '/dilutes',
+  path: '/dilutes',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BlogRoute = BlogRouteImport.update({
+  id: '/blog',
+  path: '/blog',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
@@ -22,35 +133,328 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProductSlugRoute = ProductSlugRouteImport.update({
+  id: '/product/$slug',
+  path: '/product/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BlogSlugRoute = BlogSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => BlogRoute,
+} as any)
+const AdminLoginRoute = AdminLoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => AdminRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/admin': typeof AdminRouteWithChildren
+  '/blog': typeof BlogRouteWithChildren
+  '/dilutes': typeof DilutesRoute
+  '/erectile-performance': typeof ErectilePerformanceRoute
+  '/faq': typeof FaqRoute
+  '/glp-1': typeof Glp1Route
+  '/lab-reports': typeof LabReportsRoute
+  '/not-found': typeof NotFoundRoute
+  '/pct': typeof PctRoute
+  '/peptides': typeof PeptidesRoute
+  '/privacy-policy': typeof PrivacyPolicyRoute
+  '/product-diagrams': typeof ProductDiagramsRoute
+  '/products': typeof ProductsRoute
+  '/returns': typeof ReturnsRoute
+  '/sarms': typeof SarmsRoute
+  '/shipping': typeof ShippingRoute
+  '/terms-of-service': typeof TermsOfServiceRoute
+  '/weight-loss': typeof WeightLossRoute
+  '/admin/login': typeof AdminLoginRoute
+  '/blog/$slug': typeof BlogSlugRoute
+  '/product/$slug': typeof ProductSlugRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/admin': typeof AdminRouteWithChildren
+  '/blog': typeof BlogRouteWithChildren
+  '/dilutes': typeof DilutesRoute
+  '/erectile-performance': typeof ErectilePerformanceRoute
+  '/faq': typeof FaqRoute
+  '/glp-1': typeof Glp1Route
+  '/lab-reports': typeof LabReportsRoute
+  '/not-found': typeof NotFoundRoute
+  '/pct': typeof PctRoute
+  '/peptides': typeof PeptidesRoute
+  '/privacy-policy': typeof PrivacyPolicyRoute
+  '/product-diagrams': typeof ProductDiagramsRoute
+  '/products': typeof ProductsRoute
+  '/returns': typeof ReturnsRoute
+  '/sarms': typeof SarmsRoute
+  '/shipping': typeof ShippingRoute
+  '/terms-of-service': typeof TermsOfServiceRoute
+  '/weight-loss': typeof WeightLossRoute
+  '/admin/login': typeof AdminLoginRoute
+  '/blog/$slug': typeof BlogSlugRoute
+  '/product/$slug': typeof ProductSlugRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/admin': typeof AdminRouteWithChildren
+  '/blog': typeof BlogRouteWithChildren
+  '/dilutes': typeof DilutesRoute
+  '/erectile-performance': typeof ErectilePerformanceRoute
+  '/faq': typeof FaqRoute
+  '/glp-1': typeof Glp1Route
+  '/lab-reports': typeof LabReportsRoute
+  '/not-found': typeof NotFoundRoute
+  '/pct': typeof PctRoute
+  '/peptides': typeof PeptidesRoute
+  '/privacy-policy': typeof PrivacyPolicyRoute
+  '/product-diagrams': typeof ProductDiagramsRoute
+  '/products': typeof ProductsRoute
+  '/returns': typeof ReturnsRoute
+  '/sarms': typeof SarmsRoute
+  '/shipping': typeof ShippingRoute
+  '/terms-of-service': typeof TermsOfServiceRoute
+  '/weight-loss': typeof WeightLossRoute
+  '/admin/login': typeof AdminLoginRoute
+  '/blog/$slug': typeof BlogSlugRoute
+  '/product/$slug': typeof ProductSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/about'
+  fullPaths:
+    | '/'
+    | '/about'
+    | '/admin'
+    | '/blog'
+    | '/dilutes'
+    | '/erectile-performance'
+    | '/faq'
+    | '/glp-1'
+    | '/lab-reports'
+    | '/not-found'
+    | '/pct'
+    | '/peptides'
+    | '/privacy-policy'
+    | '/product-diagrams'
+    | '/products'
+    | '/returns'
+    | '/sarms'
+    | '/shipping'
+    | '/terms-of-service'
+    | '/weight-loss'
+    | '/admin/login'
+    | '/blog/$slug'
+    | '/product/$slug'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/about'
-  id: '__root__' | '/' | '/about'
+  to:
+    | '/'
+    | '/about'
+    | '/admin'
+    | '/blog'
+    | '/dilutes'
+    | '/erectile-performance'
+    | '/faq'
+    | '/glp-1'
+    | '/lab-reports'
+    | '/not-found'
+    | '/pct'
+    | '/peptides'
+    | '/privacy-policy'
+    | '/product-diagrams'
+    | '/products'
+    | '/returns'
+    | '/sarms'
+    | '/shipping'
+    | '/terms-of-service'
+    | '/weight-loss'
+    | '/admin/login'
+    | '/blog/$slug'
+    | '/product/$slug'
+  id:
+    | '__root__'
+    | '/'
+    | '/about'
+    | '/admin'
+    | '/blog'
+    | '/dilutes'
+    | '/erectile-performance'
+    | '/faq'
+    | '/glp-1'
+    | '/lab-reports'
+    | '/not-found'
+    | '/pct'
+    | '/peptides'
+    | '/privacy-policy'
+    | '/product-diagrams'
+    | '/products'
+    | '/returns'
+    | '/sarms'
+    | '/shipping'
+    | '/terms-of-service'
+    | '/weight-loss'
+    | '/admin/login'
+    | '/blog/$slug'
+    | '/product/$slug'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  AdminRoute: typeof AdminRouteWithChildren
+  BlogRoute: typeof BlogRouteWithChildren
+  DilutesRoute: typeof DilutesRoute
+  ErectilePerformanceRoute: typeof ErectilePerformanceRoute
+  FaqRoute: typeof FaqRoute
+  Glp1Route: typeof Glp1Route
+  LabReportsRoute: typeof LabReportsRoute
+  NotFoundRoute: typeof NotFoundRoute
+  PctRoute: typeof PctRoute
+  PeptidesRoute: typeof PeptidesRoute
+  PrivacyPolicyRoute: typeof PrivacyPolicyRoute
+  ProductDiagramsRoute: typeof ProductDiagramsRoute
+  ProductsRoute: typeof ProductsRoute
+  ReturnsRoute: typeof ReturnsRoute
+  SarmsRoute: typeof SarmsRoute
+  ShippingRoute: typeof ShippingRoute
+  TermsOfServiceRoute: typeof TermsOfServiceRoute
+  WeightLossRoute: typeof WeightLossRoute
+  ProductSlugRoute: typeof ProductSlugRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/weight-loss': {
+      id: '/weight-loss'
+      path: '/weight-loss'
+      fullPath: '/weight-loss'
+      preLoaderRoute: typeof WeightLossRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/terms-of-service': {
+      id: '/terms-of-service'
+      path: '/terms-of-service'
+      fullPath: '/terms-of-service'
+      preLoaderRoute: typeof TermsOfServiceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/shipping': {
+      id: '/shipping'
+      path: '/shipping'
+      fullPath: '/shipping'
+      preLoaderRoute: typeof ShippingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sarms': {
+      id: '/sarms'
+      path: '/sarms'
+      fullPath: '/sarms'
+      preLoaderRoute: typeof SarmsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/returns': {
+      id: '/returns'
+      path: '/returns'
+      fullPath: '/returns'
+      preLoaderRoute: typeof ReturnsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/products': {
+      id: '/products'
+      path: '/products'
+      fullPath: '/products'
+      preLoaderRoute: typeof ProductsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/product-diagrams': {
+      id: '/product-diagrams'
+      path: '/product-diagrams'
+      fullPath: '/product-diagrams'
+      preLoaderRoute: typeof ProductDiagramsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/privacy-policy': {
+      id: '/privacy-policy'
+      path: '/privacy-policy'
+      fullPath: '/privacy-policy'
+      preLoaderRoute: typeof PrivacyPolicyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/peptides': {
+      id: '/peptides'
+      path: '/peptides'
+      fullPath: '/peptides'
+      preLoaderRoute: typeof PeptidesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/pct': {
+      id: '/pct'
+      path: '/pct'
+      fullPath: '/pct'
+      preLoaderRoute: typeof PctRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/not-found': {
+      id: '/not-found'
+      path: '/not-found'
+      fullPath: '/not-found'
+      preLoaderRoute: typeof NotFoundRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/lab-reports': {
+      id: '/lab-reports'
+      path: '/lab-reports'
+      fullPath: '/lab-reports'
+      preLoaderRoute: typeof LabReportsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/glp-1': {
+      id: '/glp-1'
+      path: '/glp-1'
+      fullPath: '/glp-1'
+      preLoaderRoute: typeof Glp1RouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/faq': {
+      id: '/faq'
+      path: '/faq'
+      fullPath: '/faq'
+      preLoaderRoute: typeof FaqRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/erectile-performance': {
+      id: '/erectile-performance'
+      path: '/erectile-performance'
+      fullPath: '/erectile-performance'
+      preLoaderRoute: typeof ErectilePerformanceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dilutes': {
+      id: '/dilutes'
+      path: '/dilutes'
+      fullPath: '/dilutes'
+      preLoaderRoute: typeof DilutesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blog': {
+      id: '/blog'
+      path: '/blog'
+      fullPath: '/blog'
+      preLoaderRoute: typeof BlogRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/about': {
       id: '/about'
       path: '/about'
@@ -65,23 +469,73 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/product/$slug': {
+      id: '/product/$slug'
+      path: '/product/$slug'
+      fullPath: '/product/$slug'
+      preLoaderRoute: typeof ProductSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/blog/$slug': {
+      id: '/blog/$slug'
+      path: '/$slug'
+      fullPath: '/blog/$slug'
+      preLoaderRoute: typeof BlogSlugRouteImport
+      parentRoute: typeof BlogRoute
+    }
+    '/admin/login': {
+      id: '/admin/login'
+      path: '/login'
+      fullPath: '/admin/login'
+      preLoaderRoute: typeof AdminLoginRouteImport
+      parentRoute: typeof AdminRoute
+    }
   }
 }
+
+interface AdminRouteChildren {
+  AdminLoginRoute: typeof AdminLoginRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminLoginRoute: AdminLoginRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
+
+interface BlogRouteChildren {
+  BlogSlugRoute: typeof BlogSlugRoute
+}
+
+const BlogRouteChildren: BlogRouteChildren = {
+  BlogSlugRoute: BlogSlugRoute,
+}
+
+const BlogRouteWithChildren = BlogRoute._addFileChildren(BlogRouteChildren)
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  AdminRoute: AdminRouteWithChildren,
+  BlogRoute: BlogRouteWithChildren,
+  DilutesRoute: DilutesRoute,
+  ErectilePerformanceRoute: ErectilePerformanceRoute,
+  FaqRoute: FaqRoute,
+  Glp1Route: Glp1Route,
+  LabReportsRoute: LabReportsRoute,
+  NotFoundRoute: NotFoundRoute,
+  PctRoute: PctRoute,
+  PeptidesRoute: PeptidesRoute,
+  PrivacyPolicyRoute: PrivacyPolicyRoute,
+  ProductDiagramsRoute: ProductDiagramsRoute,
+  ProductsRoute: ProductsRoute,
+  ReturnsRoute: ReturnsRoute,
+  SarmsRoute: SarmsRoute,
+  ShippingRoute: ShippingRoute,
+  TermsOfServiceRoute: TermsOfServiceRoute,
+  WeightLossRoute: WeightLossRoute,
+  ProductSlugRoute: ProductSlugRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
