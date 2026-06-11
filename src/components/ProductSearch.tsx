@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from '@tanstack/react-router';
 import { Search, X, ShoppingCart, Eye, Package } from 'lucide-react';
 import { useProducts } from '@/hooks/useProducts';
 import { useCart } from '@/context/CartContext';
@@ -71,7 +71,7 @@ export const ProductSearch = ({ isOpen, onClose }: ProductSearchProps) => {
 
   const handleView = useCallback((e: React.MouseEvent, product: Product) => {
     e.stopPropagation();
-    navigate(`/product/${product.id}`);
+    navigate({ to: '/product/$slug', params: { slug: product.id } });
     onClose();
   }, [navigate, onClose]);
 
