@@ -1,0 +1,172 @@
+import { createFileRoute, Link } from '@tanstack/react-router';
+import { useEffect, useState } from 'react';
+import { Header } from '@/components/Header';
+import { Footer } from '@/components/Footer';
+import { CheckCircle, Package, ArrowLeft, Loader2 } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+
+export const Route = createFileRoute('/order-confirmation')({
+  validateSearch: (search: Record<string, unknown>) => ({
+    order_id: (search.order_id as string) ?? null,
+    token: (search.token as string) ?? null,
+  }),
+  component: OrderConfirmation,
+});
+
+interface LineItem {
+  name: string;
+  quantity: number;
+  total: string;
+}
+
+interface Order {
+  id: string;
+  order_number: string | null;
+  status: string;
+  customer_name: string | null;
+  line_items: LineItem[] | null;
+  subtotal: number | null;
+  shipping_total: number | null;
+  tax_total: number | null;
+  total: number;
+  currency: string | null;
+  created_at: string;
+}
+
+const SAMPLE_ORDER: Order = {
+  id: 'preview-001',
+  order_number: '1042',
+  status: 'processing',
+  customer_name: 'Jane Smith',
+  line_items: [
+    { name: 'MK-677 (Ibutamoren) 25mg/mL – 30mL', quantity: 2, total: '119.98' },
+    { name: 'BPC-157 5mg', quantity: 1, total: '69.99' },
+  ],
+  subtotal: 189.97,
+  shipping_total: 9.95,
+  tax_total: 0,
+  total: 199.92,
+  currency: 'AUD',
+  created_at: new Date().toISOString(),
+};
+
+function OrderConfirmation() {
+  const { order_id: orderId, token } = Route.useSearch(); // ← replaces useSearchParams
+  const [order, setOrder] = useState<Order | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  const isPreview = !orderId && !token;
+
+  useEffect(() => {
+    if (isPreview) {
+      setOrder(SAMPLE_ORDER);
+      setLoading(false);
+      return;
+    }
+
+    const fetchOrder = async () => {
+      if (!orderId || !token) {
+        setError('Invalid order link');
+        setLoading(false);
+        return;
+      }
+
+      if (!/^[a-f0-9]{64}$/i.test(token)) {
+        setError('Invalid order link');
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const response = await fetch(
+          `${import.meta.env.VITE_SUPABASE_URL}/functions/v1/get-order?order_id=${encodeURIComponent(orderId)}&token=${encodeURIComponent(token)}`,
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              'apikey': import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY,
+            },
+          }
+        );
+
+        const result = await response.json();
+
+        if (!response.ok) {
+          if (response.status === 403) {
+            setError('Invalid or expired order link');
+          } else {
+            setError('Order not found');
+          }
+        } else if (result.order) {
+          const lineItems = Array.isArray(result.order.line_items)
+            ? (result.order.line_items as LineItem[])
+            : null;
+          setOrder({ ...result.order, line_items: lineItems });
+        }
+      } catch (err) {
+        console.error('Error loading order');
+        setError('Failed to load order details');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchOrder();
+  }, [orderId, token, isPreview]);
+
+  return (
+    <div className="min-h-screen bg-background">
+      <Header />
+
+      <main className="container mx-auto px-4 py-12 max-w-3xl">
+        {loading ? (
+          <div className="flex flex-col items-center justify-center py-20">
+            <Loader2 className="w-12 h-12 text-accent animate-spin mb-4" />
+            <p className="text-muted-foreground">Loading order details...</p>
+          </div>
+        ) : error || !order ? (
+          <div className="text-center py-20">
+            <Package className="w-16 h-16 text-muted-foreground/30 mx-auto mb-4" />
+            <h1 className="text-2xl font-serif font-semibold mb-2">Order Not Found</h1>
+            <p className="text-muted-foreground mb-6">
+              {error || "We couldn't find your order. It may still be processing."}
+            </p>
+            <Link to="/">
+              <Button variant="gold">
+                <ArrowLeft className="w-4 h-4 mr-2" />
+                Return to Shop
+              </Button>
+            </Link>
+          </div>
+        ) : (
+          <div className="space-y-8">
+            {isPreview && (
+              <div className="bg-muted border border-border rounded-lg px-4 py-3 text-sm text-muted-foreground text-center">
+                🔍 <strong>Preview mode</strong> — this is sample data. Real orders are accessed via the link sent after checkout.
+              </div>
+            )}
+            <div className="text-center">
+              <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-accent/10 mb-6">
+                <CheckCircle className="w-10 h-10 text-accent" />
+              </div>
+              <h1 className="text-3xl font-serif font-semibold mb-2">Order Confirmed!</h1>
+              <p className="text-muted-foreground">
+                Thank you for your order, {order.customer_name || 'valued customer'}
+              </p>
+            </div>
+
+            <div className="bg-card border border-border rounded-2xl p-6 space-y-6">
+              <div className="flex flex-wrap gap-4 justify-between pb-6 border-b border-border">
+                <div>
+                  <p className="text-sm text-muted-foreground">Order Number</p>
+                  <p className="font-semibold">#{order.order_number || order.id}</p>
+                </div>
+                <div>
+                  <p className="text-sm text-muted-foreground">Status</p>
+                  <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-accent/10 text-accent capitalize">
+                    {order.status}
+                  </span>
+                </div>
+                <div>
+                  <p className="text-sm text-muted-foreground">Date</p>
+                  <p
