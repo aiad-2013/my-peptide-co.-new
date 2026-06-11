@@ -1,3 +1,7 @@
+# Ignore Bun lockfile for Cloudflare Pages compatibility
+bun.lockb
+bun.lock
+
 # Logs
 logs
 *.log
