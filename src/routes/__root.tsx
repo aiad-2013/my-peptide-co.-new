@@ -94,6 +94,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
       { name: "twitter:site", content: "@Lovable" },
+      { name: "twitter:title", content: "My Peptide Co. - Precision Biotech Solutions" },
+      { name: "description", content: "My Peptide Co. New is a website for a peptide company, featuring a homepage and about us page." },
+      { property: "og:description", content: "My Peptide Co. New is a website for a peptide company, featuring a homepage and about us page." },
+      { name: "twitter:description", content: "My Peptide Co. New is a website for a peptide company, featuring a homepage and about us page." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/4a1df2eb-a750-4ec6-817a-024627003aa8/id-preview-f49e85c4--539b914b-4132-40d9-ba3d-31bd14572207.lovable.app-1781164465302.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/4a1df2eb-a750-4ec6-817a-024627003aa8/id-preview-f49e85c4--539b914b-4132-40d9-ba3d-31bd14572207.lovable.app-1781164465302.png" },
     ],
     links: [
       {
